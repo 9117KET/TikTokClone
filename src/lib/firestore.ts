@@ -15,12 +15,12 @@ import { db } from "./firebase";
 // Types
 interface UserData {
   id: string;
-  [key: string]: any;
+  [key: string]: string | number | boolean | Date;
 }
 
 interface VideoData {
   id?: string;
-  [key: string]: any;
+  [key: string]: string | number | boolean | Date | undefined;
 }
 
 interface CommentData {
@@ -113,7 +113,7 @@ export const commentOnVideo = async (
 // Test database connection
 export const testConnection = async () => {
   try {
-    const testQuery = await getDocs(collection(db, "videos"));
+    await getDocs(collection(db, "videos"));
     console.log("Firebase connection successful");
     return true;
   } catch (e) {
