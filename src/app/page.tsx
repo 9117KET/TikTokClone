@@ -1,3 +1,5 @@
+import DatabaseTest from "@/components/firestore";
+
 export default function Home() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-4">
@@ -5,6 +7,7 @@ export default function Home() {
       <p className="text-gray-600">
         Share your favorite moments with the world
       </p>
+      <DatabaseTest />
     </main>
   );
 }
