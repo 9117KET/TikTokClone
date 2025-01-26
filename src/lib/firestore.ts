@@ -20,7 +20,14 @@ interface UserData {
 
 interface VideoData {
   id?: string;
-  [key: string]: string | number | boolean | Date | undefined;
+  title: string;
+  description: string;
+  url: string;
+  timestamp: Date;
+  likes: string[];
+  comments: CommentData[];
+  userId: string;
+  [key: string]: unknown;
 }
 
 interface CommentData {
@@ -29,9 +36,18 @@ interface CommentData {
   timestamp: Date;
 }
 
-// Error handling utility
+// Add at the top of the file
+const logOperation = (operation: string, data?: unknown) => {
+  console.log(`🔥 Firestore ${operation} operation:`, data || "");
+};
+
+// Update the error handling utility
 const handleFirestoreError = (error: FirestoreError, operation: string) => {
-  console.error(`Error during ${operation}:`, error);
+  console.error(`❌ Firestore error during ${operation}:`, {
+    code: error.code,
+    message: error.message,
+    details: error,
+  });
   throw error;
 };
 
@@ -63,7 +79,9 @@ export const getUserById = async (userId: string) => {
 // Add a new video
 export const addVideo = async (videoData: VideoData) => {
   try {
+    logOperation("addVideo", { title: videoData.title });
     const docRef = await addDoc(collection(db, "videos"), videoData);
+    console.log("✅ Video added successfully:", docRef.id);
     return docRef.id;
   } catch (e) {
     handleFirestoreError(e as FirestoreError, "adding video");
@@ -73,7 +91,9 @@ export const addVideo = async (videoData: VideoData) => {
 // Get all videos
 export const getVideos = async () => {
   try {
+    logOperation("getVideos");
     const querySnapshot = await getDocs(collection(db, "videos"));
+    console.log(`📥 Retrieved ${querySnapshot.size} videos`);
     return querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),

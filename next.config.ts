@@ -18,6 +18,14 @@ const nextConfig: NextConfig = {
       process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY!,
   },
+  images: {
+    domains: ["uploadthing.com", "utfs.io"],
+  },
+  experimental: {
+    serverActions: {
+      allowedOrigins: ["localhost:3000"],
+    },
+  },
 };
 
 export default nextConfig;
